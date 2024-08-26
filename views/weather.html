@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="weather.css">
+  <title>Weather App</title>
+</head>
+<body>
+  <div class="container">
+    <form class="form__input">
+      <label for="input" class="label">
+        Weather App
+      </label>
+      <input type="text" name="input" id="input" class="form__inputField">
+      <button type="submit" class="form__search-btn">
+        Search
+      </button>
+    </div>
+  </div>
+
+  <script>
+
+    async function fetchWeather (location) {
+      const url = `http://api.weatherapi.com/v1/current.json?key=89da181377194768bc4142457241306&q=${location}&aqi=no`;
+
+      const response = await fetch (url);
+      return await response.json ();
+    }
+
+    const formElement = document.querySelector (".form__input");
+
+    formElement.addEventListener ('submit', async (e)=> {
+      e.preventDefault ();
+
+      const input = document.querySelector ('#input');
+
+      const data = await fetchWeather (input.value);
+
+      console.log(data);
+
+      input.value = "";
+    })
+  </script>
+</body>
+</html>

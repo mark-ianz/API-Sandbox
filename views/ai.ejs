@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+
+      .form {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      #prompt {
+        outline: none;
+        padding: 0.5em;
+        margin-right: 1em;
+        font-size: 1em;
+      }
+
+      .submit-btn {
+        font-size: 1em;
+        padding: 0.5em;
+        cursor: pointer;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <title>AI</title>
+  </head>
+  <body>
+    <h1>Talk to AI!</h1>
+    <form action="/ai-prompt" method="post" class="form">
+      <textarea
+        cols="20"
+        rows="3"
+        name="prompt"
+        id="prompt"
+        placeholder="Input your prompt..."
+      ></textarea>
+      <button class="submit-btn" type="submit">Send</button>
+    </form>
+    <script>
+      const form = document.querySelector(".form");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const formObject = {};
+        formData.forEach((value, key) => {
+          formObject[key] = value;
+        });
+
+        const response = await fetch("/ai-prompt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formObject),
+        });
+
+        const data = await response.json();
+
+        console.log("You:", formObject.prompt, "\nAI:", data.text);
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
